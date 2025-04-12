@@ -1,0 +1,28 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # This means every time you push to 'main' branch, it triggers the deployment
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # This runs the job on the latest Ubuntu server
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2  # This checks out your code from GitHub
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2  # This sets up Node.js in your environment
+      with:
+        node-version: '16'  # This is the version of Node.js (you can use another version if needed)
+
+    - name: Install dependencies
+      run: npm install  # This installs all dependencies that your project needs
+
+    - name: Build the app
+      run: npm run build  # This builds your app for production
+
+    - name: Deploy to GitHub Pages
+      run: npx gh-pages -d dist  # This deploys the 'dist' folder to GitHub Pages
