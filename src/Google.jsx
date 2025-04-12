@@ -8,7 +8,7 @@ const CodeCampus = () => {
   const [summary, setSummary] = useState(null); 
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
   const cx = import.meta.env.VITE_GOOGLE_CX;
-  const hfToken = import.meta.env.VITE_HF_TOKEN;
+  const hfToken = import.meta.env.VITE_HUGGINGFACE_TOKEN;
 
   const handleSearch = async (search) => {
     try {
