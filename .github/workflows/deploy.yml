@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Trigger deployment on push to the main branch
+      - main
 
 jobs:
   deploy:
@@ -18,14 +18,14 @@ jobs:
       with:
         node-version: '16'  # Specify Node.js version (update as needed)
 
+    - name: Clean node_modules
+      run: rm -rf node_modules # Remove existing node_modules
+
     - name: Install dependencies
-      run: npm install  # Installs the project dependencies
+      run: npm ci  # Use npm ci to install dependencies cleanly
 
     - name: Install Vite globally
-      run: npm install -g vite  # Install Vite globally to ensure it is available
-
-    - name: Make Vite executable
-      run: chmod +x ./node_modules/.bin/vite  # Ensure the vite command is executable
+      run: npm install -g vite
 
     - name: Build project
       run: npm run build  # Runs the Vite build command
