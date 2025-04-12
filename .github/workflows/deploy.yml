@@ -3,26 +3,29 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # This means every time you push to 'main' branch, it triggers the deployment
+      - main  # Trigger deployment on push to the main branch
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest  # This runs the job on the latest Ubuntu server
+    runs-on: ubuntu-latest  # Use an Ubuntu runner
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2  # This checks out your code from GitHub
+    - name: Checkout code
+      uses: actions/checkout@v2
 
     - name: Set up Node.js
-      uses: actions/setup-node@v2  # This sets up Node.js in your environment
+      uses: actions/setup-node@v2
       with:
-        node-version: '16'  # This is the version of Node.js (you can use another version if needed)
+        node-version: '16'  # Specify your Node.js version (you can adjust it to the version you're using)
 
     - name: Install dependencies
-      run: npm install  # This installs all dependencies that your project needs
+      run: npm install  # Installs the project dependencies
 
-    - name: Build the app
-      run: npm run build  # This builds your app for production
+    - name: Grant execute permission to Vite
+      run: chmod +x node_modules/.bin/vite  # Ensure Vite has execution permissions
+
+    - name: Build project
+      run: npm run build  # Runs the Vite build command
 
     - name: Deploy to GitHub Pages
-      run: npx gh-pages -d dist  # This deploys the 'dist' folder to GitHub Pages
+      run: npx gh-pages -d dist  # Deploy to GitHub Pages
