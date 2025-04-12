@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest  # Use an Ubuntu runner
+    runs-on: ubuntu-latest  # Use Ubuntu runner
 
     steps:
     - name: Checkout code
@@ -16,13 +16,13 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '16'  # Specify your Node.js version (you can adjust it to the version you're using)
+        node-version: '16'  # Specify Node.js version (update as needed)
 
     - name: Install dependencies
       run: npm install  # Installs the project dependencies
 
-    - name: Grant execute permission to Vite
-      run: chmod +x node_modules/.bin/vite  # Ensure Vite has execution permissions
+    - name: Make Vite executable
+      run: chmod +x ./node_modules/.bin/vite  # Ensure the vite command is executable
 
     - name: Build project
       run: npm run build  # Runs the Vite build command
