@@ -9,7 +9,8 @@ const CodeCampus = () => {
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
   const cx = import.meta.env.VITE_GOOGLE_CX;
   const hfToken = import.meta.env.VITE_HUGGINGFACE_TOKEN;
-
+  console.log(hfToken)
+  console.log(data)
   const handleSearch = async (search) => {
     try {
       if (!search) return;
@@ -41,7 +42,8 @@ const CodeCampus = () => {
 const handleSummarize = async () => {
   if (!data?.items?.[0]?.snippet) return;
 
-  const context = data.items[0].snippet;
+const context = `${data.items[0].title} - ${data.items[0].snippet}`;
+;
   setLoading(true);
   try {
     const res = await fetch(
