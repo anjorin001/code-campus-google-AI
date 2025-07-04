@@ -130,6 +130,7 @@ const CodeCampus = () => {
       
       <footer className="codecampus-footer">
         <p>© {new Date().getFullYear()} CodeCampus - Search powered by Google API</p>
+        <p>~ANJORIN</p>
       </footer>
     </div>
   );
