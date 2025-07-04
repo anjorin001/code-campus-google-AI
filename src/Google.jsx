@@ -38,39 +38,47 @@ const CodeCampus = () => {
     }
   };
 
-  const handleSummarize = async () => {
-    if (!data?.items?.[0]?.snippet) return;
-    
-    const context = data.items[0].snippet;
-    setLoading(true);
-    try {
-      const res = await fetch(
-        "https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${hfToken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            inputs: context, 
-          }),
-        }
-      );
-      
-      if (!res.ok) {
-        throw new Error(`Summary request failed with status ${res.status}`);
+const handleSummarize = async () => {
+  if (!data?.items?.[0]?.snippet) return;
+
+  const context = data.items[0].snippet;
+  setLoading(true);
+  try {
+    const res = await fetch(
+      "https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${hfToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          inputs: context,
+        }),
       }
-      
-      const result = await res.json();
-      setSummary(result?.[0]?.summary_text || "No summary returned.");
-    } catch (err) {
-      console.error("Summary Error:", err);
-      setError(err);
-    } finally {
-      setLoading(false);
+    );
+
+    if (!res.ok) {
+      if (res.status === 401) {
+        setSummary("Summarize not available at the moment (Unauthorized).");
+      } else {
+        setSummary("Summarize not available at the moment.");
+      }
+      throw new Error(`Summary request failed with status ${res.status}`);
     }
-  };
+
+    const result = await res.json();
+    setSummary(result?.[0]?.summary_text || "No summary returned.");
+  } catch (err) {
+    console.error("Summary Error:", err);
+    setError(err);
+    if (!summary) {
+      setSummary("Summarize not available at the moment.");
+    }
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="codecampus-container">
@@ -80,8 +88,6 @@ const CodeCampus = () => {
       
       <main className="codecampus-main">
         <SearchBar onSearch={handleSearch} />
-        
-        {error && <div className="error-message">Error: {error.message}</div>}
         
         {loading && (
           <div className="loading-container">
